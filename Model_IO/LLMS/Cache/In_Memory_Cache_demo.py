@@ -19,4 +19,5 @@ from langchain.cache import InMemoryCache
 set_llm_cache(InMemoryCache())
 
 # The first time, it is not yet in cache, so it should take longer
-llm.predict("Tell me a joke")
+ret = llm.predict("Tell me a joke")
+print(ret)
