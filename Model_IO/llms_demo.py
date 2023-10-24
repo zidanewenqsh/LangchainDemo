@@ -18,6 +18,12 @@ import asyncio
 # 使用字典推导式创建字典，值初始化为 False
 cmd_dict = {key: False for key in range(100)}
 
+import os
+from dotenv import load_dotenv
+_ = load_dotenv("/data/home/wenquanshan/MyProjects/LangchainDemo/.env")
+import openai
+openai.api_key = os.environ.get("OPENAI_API_KEY")
+# print(openai.api_key)
 def llms_demo(index=0):
     '''
     This is a demo of the OpenAI class in langchain.llms
@@ -85,5 +91,6 @@ async def  llms_demo_async(index=0):
             print(chunk)
 
 
-
+if __name__ == '__main__':
+    llms_demo(0)
 

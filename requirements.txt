@@ -3,3 +3,8 @@ tiktoken
 chromadb
 unstructured
 jq
+pypdf
+fpdf
+pdf2image
+pdfminer
+sentence-transformers
