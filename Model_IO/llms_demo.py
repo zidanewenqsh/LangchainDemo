@@ -10,9 +10,6 @@ llm.batch() is a blocking call that returns the result of the query
 @return:
 
 """
-
-import openai
-import langchain
 from langchain.llms import OpenAI
 import asyncio
 # 使用字典推导式创建字典，值初始化为 False
@@ -20,10 +17,18 @@ cmd_dict = {key: False for key in range(100)}
 
 import os
 from dotenv import load_dotenv
-_ = load_dotenv("/data/home/wenquanshan/MyProjects/LangchainDemo/.env")
+
+import platform
+envfile = ""
+if platform.system() == "Windows":
+    envfile = "D:/MyProjects/LangchainDemo/.env"
+elif platform.system() == "Linux":
+    envfile = "/data/home/wenquanshan/MyProjects/LangchainDemo/.env"
+assert len(envfile) > 0
+_ = load_dotenv(envfile)
 import openai
 openai.api_key = os.environ.get("OPENAI_API_KEY")
-# print(openai.api_key)
+print(openai.api_key)
 def llms_demo(index=0):
     '''
     This is a demo of the OpenAI class in langchain.llms

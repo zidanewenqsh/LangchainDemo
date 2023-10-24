@@ -8,3 +8,4 @@ fpdf
 pdf2image
 pdfminer
 sentence-transformers
+faiss-cpu
