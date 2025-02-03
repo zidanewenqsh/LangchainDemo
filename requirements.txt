@@ -1,4 +1,8 @@
+python-dotenv
 langchain
+langchain-openai
+gradio
+streamlit
 tiktoken
 chromadb
 unstructured

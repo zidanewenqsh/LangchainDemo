@@ -1,0 +1,147 @@
+{
+    "rules": [
+        {
+            "name": "Generate Markdown Documentation",
+            "pattern": ".*",
+            "description": "Automatically generate markdown documentation based on user queries",
+            "template": {
+                "format": "markdown",
+                "structure": {
+                    "title": "# ${topic}",
+                    "introduction": "${brief_description}",
+                    "sections": [
+                        {
+                            "heading": "## Overview",
+                            "content": "${overview_content}"
+                        },
+                        {
+                            "heading": "## Details",
+                            "content": "${detailed_content}"
+                        },
+                        {
+                            "heading": "## Best Practices",
+                            "content": "${best_practices}"
+                        },
+                        {
+                            "heading": "## Examples",
+                            "content": "${examples}"
+                        },
+                        {
+                            "heading": "## Summary",
+                            "content": "${summary}"
+                        }
+                    ]
+                }
+            },
+            "output": {
+                "filename": "${topic_lowercase}.md",
+                "path": "./docs/"
+            }
+        },
+        {
+            "name": "Replace Code Blocks in Markdown",
+            "pattern": "\\.md$",
+            "description": "Replace code block markers (```) with ``` in markdown files",
+            "replacements": [
+                {
+                    "pattern": "```([\\s\\S]*?)```",
+                    "replacement": "```$1```"
+                }
+            ],
+            "output": {
+                "inplace": true
+            }
+        },
+        {
+            "name": "LangChain Latest API Usage",
+            "pattern": ".*\\.py$",
+            "description": "Ensure generated LangChain code uses the latest API patterns",
+            "replacements": [
+                {
+                    "pattern": "from langchain\\.llms\\.openai import OpenAI",
+                    "replacement": "from langchain_openai import ChatOpenAI"
+                },
+                {
+                    "pattern": "OpenAI\\(",
+                    "replacement": "ChatOpenAI("
+                },
+                {
+                    "pattern": "\\.run\\(",
+                    "replacement": ".invoke("
+                },
+                {
+                    "pattern": "LLMChain\\(llm=([^,]+), prompt=([^)]+)\\)",
+                    "replacement": "$2 | $1"
+                },
+                {
+                    "pattern": "from langchain\\.chains import LLMChain",
+                    "replacement": "# LLMChain is deprecated, using new pipe syntax"
+                }
+            ],
+            "bestPractices": {
+                "imports": [
+                    "from langchain_core.prompts import PromptTemplate",
+                    "from langchain_core.output_parsers import StrOutputParser",
+                    "from langchain_openai import ChatOpenAI",
+                    "from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler"
+                ],
+                "chainConstruction": "Use the | operator for chain construction instead of LLMChain",
+                "outputParsing": "Use StrOutputParser() for simple string outputs",
+                "streaming": "Add streaming=True and callbacks=[StreamingStdOutCallbackHandler()] for streaming responses"
+            },
+            "output": {
+                "inplace": true
+            }
+        },
+        {
+            "name": "Priority Processing for Added Content",
+            "pattern": ".*",
+            "description": "Prioritize processing of added files and content segments",
+            "priority": {
+                "added_files": {
+                    "enabled": true,
+                    "description": "Process added files first",
+                    "actions": [
+                        "analyze_dependencies",
+                        "process_related_files",
+                        "update_references"
+                    ]
+                },
+                "added_segments": {
+                    "enabled": true,
+                    "description": "Process added content segments first",
+                    "actions": [
+                        "identify_context",
+                        "find_related_segments",
+                        "update_connected_content"
+                    ]
+                },
+                "context_analysis": {
+                    "scope": [
+                        "imports",
+                        "function_calls",
+                        "variable_references",
+                        "documentation_links"
+                    ],
+                    "depth": 2
+                }
+            },
+            "processing": {
+                "order": [
+                    "added_files",
+                    "added_segments",
+                    "related_content",
+                    "general_content"
+                ],
+                "related_content": {
+                    "max_distance": 2,
+                    "relevance_threshold": 0.7
+                }
+            },
+            "output": {
+                "inplace": true,
+                "generate_report": true
+            }
+        }
+    ]
+}
